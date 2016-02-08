@@ -1,32 +1,22 @@
-import AltContainer from 'alt-container'
 import React from 'react'
+import uuid from 'node-uuid'
 import Notes from './Notes'
-import NoteActions from '../actions/NoteActions'
-import NoteStore from '../stores/NoteStore'
 
 export default class App extends React.Component {
-    // constructor (props) {
-    //     super(props)
+    constructor (props) {
+        super(props)
 
-    //     this.state = NoteStore.getState()
+        this.state = {
+            notes: []
+        }
 
-    //     this.storeChanged = this.storeChanged.bind(this)
-    // }
-
-    // componentDidMount () {
-    //     NoteStore.listen(this.storeChanged)
-    // }
-
-    // componentWillUnmount () {
-    //     NoteStore.unlisten(this.storeChanged)
-    // }
-
-    // storeChanged (state) {
-    //     this.setState(state)
-    // }
+        this.addNote = this.addNote.bind(this)
+        this.editNote = this.editNote.bind(this)
+        this.deleteNote = this.deleteNote.bind(this)
+    }
 
     render () {
-        // const notes = this.state.notes
+        const notes = this.state.notes
 
         return (
             <div>
@@ -34,27 +24,35 @@ export default class App extends React.Component {
                 <button onClick={this.addNote}>Add Note</button>
 
                 {/* Notes */}
-                <AltContainer
-                    stores={[NoteStore]}
-                    inject={{
-                        notes: () => NoteStore.getState().notes
-                    }}
-                >
-                    <Notes onEdit={this.editNote} onDelete={this.deleteNote} />
-                </AltContainer>
+                <Notes notes={notes} onEdit={this.editNote} onDelete={this.deleteNote} />
             </div>
         )
     }
 
     addNote () {
-        NoteActions.create({task: 'New Task'})
+        const id = uuid.v4()
+        const task = 'New Task'
+
+        this.setState({
+            notes: [...this.state.notes, { id, task }]
+        })
     }
 
     editNote (id, task) {
-        NoteActions.update({id, task})
+        const notes = this.state.notes.map(note => {
+            if (note.id === id) {
+                return Object.assign({}, note, {task})
+            }
+
+            return note
+        })
+
+        this.setState({notes})
     }
 
     deleteNote (id) {
-        NoteActions.delete(id)
+        this.setState({
+            notes: this.state.notes.filter(note => note.id !== id)
+        })
     }
 }
