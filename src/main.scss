@@ -1,8 +1,28 @@
+body {
+    background-color: #fff;
+}
+
+ul {
+    padding-left: 0;
+    list-style: none;
+}
+
 .note {
+    display: inline-block;
+    margin-bottom: 2px;
     padding: 5px;
 
     span {
         margin-right: 10px;
-        color: purple;
+        transition: color .3s;
+    }
+
+    button {
+        vertical-align: top;
+        visibility: hidden;
+    }
+
+    &:hover button {
+        visibility: visible;
     }
 }
