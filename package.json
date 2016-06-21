@@ -5,9 +5,10 @@
   "main": "src/index.jsx",
   "repository": "alexblunck/starter-react",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 0",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "webpack-dev-server --dev",
     "build": "webpack --build",
-    "start": "webpack-dev-server --dev"
+    "clean": "rm -rf node_modules/ build/"
   },
   "keywords": [
     "react",
