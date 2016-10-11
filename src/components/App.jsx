@@ -20,6 +20,8 @@ export default class App extends React.Component {
 
         return (
             <div>
+                <h1>starter-react</h1>
+
                 {/* Button - Add Note */}
                 <button onClick={this.addNote}>Add Note</button>
 
