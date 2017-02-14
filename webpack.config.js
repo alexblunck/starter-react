@@ -1,13 +1,17 @@
-import path from 'path'
-import { argv } from 'yargs'
-import webpack from 'webpack'
-import merge from 'webpack-merge'
-import CleanPlugin from 'clean-webpack-plugin'
-import HtmlPlugin from 'html-webpack-plugin'
-import ExtractTextPlugin from 'extract-text-webpack-plugin'
-import CompressionPlugin from 'compression-webpack-plugin'
-import autoprefixer from 'autoprefixer'
-import HtmlPluginRemove from 'html-webpack-plugin-remove'
+const pkg = require('./package.json')
+const path = require('path')
+const git = require('git-rev-sync')
+const webpack = require('webpack')
+const merge = require('webpack-merge')
+const CleanPlugin = require('clean-webpack-plugin')
+const HtmlPlugin = require('html-webpack-plugin')
+const HtmlPluginRemove = require('html-webpack-plugin-remove')
+const ExtractTextPlugin = require('extract-text-webpack-plugin')
+const CompressionPlugin = require('compression-webpack-plugin')
+const ZipPlugin = require('zip-webpack-plugin')
+
+const isProduction = process.env.NODE_ENV === 'production'
+const isDevelopment = process.env.NODE_ENV === 'development'
 
 let config = null;
 
@@ -16,7 +20,7 @@ let config = null;
 // ----------------------------------------------------------------------
 const PATHS = {
     src: path.join(__dirname, 'src'),
-    style: path.join(__dirname, 'src/main.scss'),
+    style: path.join(__dirname, 'src/index.scss'),
     build: path.join(__dirname, 'build')
 };
 
@@ -26,7 +30,7 @@ const PATHS = {
 const common = {
     // Allow importing of .jsx files without using file extension
     resolve: {
-        extensions: ['', '.js', '.jsx']
+        extensions: ['.js', '.jsx']
     },
     entry: {
         app: PATHS.src,
@@ -37,11 +41,11 @@ const common = {
         filename: '[name].js'
     },
     module: {
-        loaders: [
+        rules: [
             // Babel Loader
             {
                 test: /\.jsx?$/,
-                loaders: ['babel?cacheDirectory'],
+                loader: 'babel-loader?cacheDirectory',
                 include: PATHS.src,
                 exclude: /node_modules/
             }
@@ -50,23 +54,19 @@ const common = {
     plugins: [
         // Generate index.html file
         new HtmlPlugin({
-            template: 'node_modules/html-webpack-template/index.ejs',
-            title: 'starter-react',
-            appMountId: 'app',
-            inject: false,
+            template: path.join(PATHS.src, 'index.html'),
             minify: { removeComments: true, collapseWhitespace: true }
         }),
         // Remove style.[hash].js file from generated html, which is created
         // by specifiying a seperate chunk for styles
-        new HtmlPluginRemove(/<script.*?src="style\..*?\.js".*?<\/script>/)
-    ],
-    postcss: () => [autoprefixer]
+        new HtmlPluginRemove(/<script type="text\/javascript" src="style\..*?\.js".*?<\/script>/)
+    ]
 };
 
 // ----------------------------------------------------------------------
 // Config: Development
 // ----------------------------------------------------------------------
-if (argv.dev) {
+if (isDevelopment) {
     // Set babel environment to "dev" to enable hot module replacement
     process.env.BABEL_ENV = 'dev';
 
@@ -76,17 +76,16 @@ if (argv.dev) {
             historyApiFallback: true,
             hot: true,
             inline: true,
-            progress: false,
             stats: 'errors-only',
             host: process.env.HOST,
             port: process.env.PORT
         },
         module: {
-            loaders: [
+            rules: [
                 // Sass Loader
                 {
                     test: /\.scss$/,
-                    loaders: ['style', 'css', 'postcss', 'sass'],
+                    use: ['style-loader', 'css-loader', 'postcss-loader', 'sass-loader'],
                     include: PATHS.src,
                     exclude: /node_modules/
                 }
@@ -101,7 +100,7 @@ if (argv.dev) {
 // ----------------------------------------------------------------------
 // Config: Build / Production
 // ----------------------------------------------------------------------
-else if (argv.build) {
+else if (isProduction) {
     config = merge(common, {
         output: {
             path: PATHS.build,
@@ -109,11 +108,14 @@ else if (argv.build) {
             chunkFilename: '[id].[chunkhash].js'
         },
         module: {
-            loaders: [
+            rules: [
                 // Sass Loader
                 {
                     test: /\.scss$/,
-                    loader: ExtractTextPlugin.extract('style', 'css!sass!postcss'),
+                    use: ExtractTextPlugin.extract({
+                        fallback: "style-loader",
+                        use: ['css-loader', 'postcss-loader', 'sass-loader']
+                    }),
                     include: PATHS.src,
                     exclude: /node_modules/
                 }
@@ -129,7 +131,6 @@ else if (argv.build) {
             new webpack.DefinePlugin({
                 'process.env.NODE_ENV': '"production"'
             }),
-            new webpack.optimize.OccurrenceOrderPlugin(true),
             // Minify js
             new webpack.optimize.UglifyJsPlugin({
                 compress: {
@@ -137,11 +138,22 @@ else if (argv.build) {
                 }
             }),
             // Extract css out of "style" chunk
-            new ExtractTextPlugin('[name].[chunkhash].css'),
+            new ExtractTextPlugin({
+                filename: '[name].[chunkhash].css',
+                allChunks: true
+            }),
             // Gzip all files in "build" dir.
-            new CompressionPlugin()
+            new CompressionPlugin(),
+            // Zip all emitted files
+            new ZipPlugin({
+                filename: `${pkg.name}-${git.short()}.zip`,
+                exclude: [
+                    /.*\.map.*/,
+                    /style\..+js.*/
+                ]
+            })
         ]
     });
 }
 
-export default config
+module.exports = config
