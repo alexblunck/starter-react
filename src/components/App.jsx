@@ -1,60 +1,60 @@
 import React from 'react'
-import uuid from 'node-uuid'
-import Notes from './Notes'
+import uuid from 'uuid/v4'
+import Todos from './Todos'
 
 export default class App extends React.Component {
     constructor (props) {
         super(props)
 
         this.state = {
-            notes: []
+            todos: []
         }
 
-        this.addNote = this.addNote.bind(this)
-        this.editNote = this.editNote.bind(this)
-        this.deleteNote = this.deleteNote.bind(this)
+        this.addTodo = this.addTodo.bind(this)
+        this.editTodo = this.editTodo.bind(this)
+        this.deleteTodo = this.deleteTodo.bind(this)
     }
 
     render () {
-        const notes = this.state.notes
+        const todos = this.state.todos
 
         return (
             <div>
                 <h1>starter-react</h1>
 
-                {/* Button - Add Note */}
-                <button onClick={this.addNote}>Add Note</button>
+                {/* Button - Add Todo */}
+                <button onClick={this.addTodo}>Add Todo</button>
 
-                {/* Notes */}
-                <Notes notes={notes} onEdit={this.editNote} onDelete={this.deleteNote} />
+                {/* Todos */}
+                <Todos todos={todos} onEdit={this.editTodo} onDelete={this.deleteTodo} />
             </div>
         )
     }
 
-    addNote () {
-        const id = uuid.v4()
-        const task = 'New Task'
+    addTodo () {
+        const id = uuid()
+        const name = 'New Todo'
 
         this.setState({
-            notes: [...this.state.notes, { id, task }]
+            todos: [...this.state.todos, { id, name }]
         })
     }
 
-    editNote (id, task) {
-        const notes = this.state.notes.map(note => {
-            if (note.id === id) {
-                return Object.assign({}, note, {task})
+    editTodo (id, name) {
+        const todos = this.state.todos.map(todo => {
+            if (todo.id === id) {
+                return Object.assign({}, todo, { name })
             }
 
-            return note
+            return todo
         })
 
-        this.setState({notes})
+        this.setState({todos})
     }
 
-    deleteNote (id) {
+    deleteTodo (id) {
         this.setState({
-            notes: this.state.notes.filter(note => note.id !== id)
+            todos: this.state.todos.filter(todo => todo.id !== id)
         })
     }
 }

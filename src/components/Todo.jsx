@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default class Note extends React.Component {
+export default class Todo extends React.Component {
     constructor (props) {
         super(props)
 
@@ -18,15 +18,15 @@ export default class Note extends React.Component {
             return this.renderEdit()
         }
 
-        return this.renderNote()
+        return this.renderTodo()
     }
 
-    renderNote () {
+    renderTodo () {
         const onDelete = this.props.onDelete
 
         return (
-            <div className="note" onClick={this.edit}>
-                <span>{this.props.task}</span>
+            <div className="todo" onClick={this.edit}>
+                <span>{this.props.name}</span>
                 {onDelete ? this.renderDelete() : null}
             </div>
         )
@@ -36,7 +36,7 @@ export default class Note extends React.Component {
         return (
             <input type="text"
                 autoFocus={true}
-                defaultValue={this.props.task}
+                defaultValue={this.props.name}
                 onBlur={this.finishEdit}
                 onKeyPress={this.checkEnter}
             />
