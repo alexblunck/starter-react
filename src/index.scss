@@ -1,28 +1,22 @@
+@import '~sanitize.css';
+
+html,
 body {
-    background-color: #fff;
+    height: 100%;
+    background-color: azure;
+    font-family: system-ui;
 }
 
-ul {
-    padding-left: 0;
-    list-style: none;
+#app {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
 }
 
-.todo {
-    display: inline-block;
-    margin-bottom: 2px;
-    padding: 5px;
-
-    span {
-        margin-right: 10px;
-        transition: color .3s;
-    }
-
-    button {
-        vertical-align: top;
-        visibility: hidden;
-    }
-
-    &:hover button {
-        visibility: visible;
-    }
+h1 {
+    margin: 0;
+    padding: 0;
+    font-weight: 300;
 }
