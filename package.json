@@ -19,15 +19,15 @@
   "author": "Alexander Blunck",
   "license": "MIT",
   "dependencies": {
-    "react": "16.0.0",
-    "react-dom": "16.0.0",
+    "react": "16.1.0",
+    "react-dom": "16.1.0",
     "sanitize.css": "5.0.0"
   },
   "devDependencies": {
     "autoprefixer": "7.1.6",
     "babel-core": "6.26.0",
     "babel-loader": "7.1.2",
-    "babel-plugin-inline-react-svg": "0.5.1",
+    "babel-plugin-inline-react-svg": "0.5.2",
     "babel-plugin-syntax-dynamic-import": "6.18.0",
     "babel-plugin-transform-react-jsx-img-import": "0.1.4",
     "babel-preset-env": "1.6.1",
@@ -46,7 +46,7 @@
     "inline-chunk-manifest-html-webpack-plugin": "2.0.0",
     "node-sass": "4.6.0",
     "postcss-loader": "2.0.8",
-    "react-hot-loader": "3.1.1",
+    "react-hot-loader": "3.1.2",
     "sass-lint": "1.12.1",
     "sass-loader": "6.0.6",
     "serve": "6.4.1",
