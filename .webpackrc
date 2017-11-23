@@ -1,0 +1,5 @@
+{
+    "framework": "react",
+    "port": 4000,
+    "cssSourceMap": false
+}

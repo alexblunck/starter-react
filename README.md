@@ -1,14 +1,5 @@
 # starter-react
-Starting point for React applications using webpack as the build step.
-
-## Setup
-The project uses [alexblunck/webpack-config](https://github.com/alexblunck/webpack-config) for its webpack configuration. It is included as a submodule in the `lib` directory.
-
-```bash
-git clone https://github.com/alexblunck/starter-react --recurse-submodules
-```
-
-## Workflow
+Starting point for building react applications.
 
 ### Development
 Run `npm start` to start a development server, open a browser & watch for changes.
