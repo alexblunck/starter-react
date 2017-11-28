@@ -2,7 +2,7 @@
   "name": "starter-react",
   "version": "1.0.0",
   "description": "Starting point for building react applications",
-  "main": "src/index.jsx",
+  "main": "src/index.js",
   "repository": "alexblunck/starter-react",
   "scripts": {
     "start": "webpack-scripts start",
