@@ -19,13 +19,13 @@
   "dependencies": {
     "react": "16.2.0",
     "react-dom": "16.2.0",
-    "react-hot-loader": "4.0.0-beta.18",
+    "react-hot-loader": "4.0.0",
     "sanitize.css": "5.0.0"
   },
   "devDependencies": {
     "@blunck/webpack-scripts": "0.4.2",
-    "eslint": "4.16.0",
-    "eslint-plugin-react": "7.5.1",
+    "eslint": "4.18.1",
+    "eslint-plugin-react": "7.7.0",
     "sass-lint": "1.12.1"
   }
 }
