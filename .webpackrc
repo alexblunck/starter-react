@@ -1,6 +1,5 @@
 {
     "framework": "react",
     "port": 4000,
-    "cssSourceMap": false,
-    "favicon": "src/favicon.ico"
+    "cssSourceMap": false
 }
