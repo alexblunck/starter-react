@@ -1,3 +1,4 @@
+import 'sanitize.css'
 import './index.scss'
 
 import React from 'react'
