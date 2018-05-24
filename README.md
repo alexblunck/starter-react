@@ -1,5 +1,5 @@
 # starter-react
-Starting point for building react applications.
+Starting point for building react applications
 
 ### Development
 Run `npm start` to start a development server, open a browser & watch for changes.
