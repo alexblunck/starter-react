@@ -20,3 +20,4 @@ rules:
   single-line-per-selector: 0
   force-element-nesting: 0
   force-pseudo-nesting: 0
+  class-name-format: 0
